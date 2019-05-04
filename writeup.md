@@ -51,23 +51,23 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 24 and 64 (model.py lines 50-71) 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer (code line 51-54). 
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in order to reduce overfitting. 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 74). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 73).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I tried to control the car frequentry to keep the car on the center when I recorded the data. 
 
 For details about how I created the training data, see the next section. 
 
@@ -75,27 +75,55 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a convolution neural network model similar to the one Nvidia used in [End to end learning for self-driving cars](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=2ahUKEwjyk96Z_IDiAhVLzbwKHewNBwEQFjAAegQIAhAC&url=https%3A%2F%2Fimages.nvidia.com%2Fcontent%2Ftegra%2Fautomotive%2Fimages%2F2016%2Fsolutions%2Fpdf%2Fend-to-end-dl-using-px.pdf&usg=AOvVaw10_flEW7gmCuHMDUngG8qV) I thought this model might be appropriate because the task I'm trying to do is similar to the Nvidia's work.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I introduced dropout layers to Convolutional layers and fully connected layers.
 
-Then I ... 
+Before adding dropout layers  
+ Epoch 1/5 loss: 0.0386 - val_loss: 0.0525  
+ Epoch 2/5 loss: 0.0316 - val_loss: 0.0485  
+ Epoch 3/5 loss: 0.0266 - val_loss: 0.0519  
+ Epoch 4/5 loss: 0.0230 - val_loss: 0.0565  
+ Epoch 5/5 loss: 0.0198 - val_loss: 0.0646  
+ 
+After adding dropout layers  
+ Epoch 1/5 loss: 0.0411 - val_loss: 0.0517  
+ Epoch 2/5 loss: 0.0348 - val_loss: 0.0504  
+ Epoch 3/5 loss: 0.0311 - val_loss: 0.0521  
+ Epoch 4/5 loss: 0.0286 - val_loss: 0.0517  
+ Epoch 5/5 loss: 0.0265 - val_loss: 0.0516  
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+The final step was to run the simulator to see how well the car was driving around track one. The vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture consisted of a convolution neural network with the following layers and layer sizes ...
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+|Layer (type)                | Output Shape            |  Param #|   
+|:---|:---:|---:|
+|lambda_1 (Lambda)            |(None, 160, 320, 3)       |0         
+|cropping2d_1 (Cropping2D)    |(None, 65, 320, 3)        |0         
+|conv2d_1 (Conv2D)            |(None, 31, 158, 24)       |1824      
+|conv2d_2 (Conv2D)            |(None, 14, 77, 36)        |21636     
+|conv2d_3 (Conv2D)            |(None, 5, 37, 48)         |43248     
+|conv2d_4 (Conv2D)            |(None, 3, 35, 64)         |27712     
+|dropout_1 (Dropout)          |(None, 3, 35, 64)         |0         
+|conv2d_5 (Conv2D)            |(None, 1, 33, 64)         |36928     
+|dropout_2 (Dropout)          |(None, 1, 33, 64)         |0         
+|flatten_1 (Flatten)          |(None, 2112)              |0         
+|dense_1 (Dense)              |(None, 100)               |211300    
+|dropout_3 (Dropout)          |(None, 100)               |0         
+|dense_2 (Dense)              |(None, 50)                |5050      
+|dense_3 (Dense)              |(None, 10)                |510       
+|dense_4 (Dense)              |(None, 1)                 |11        
 
-![alt text][image1]
+
+Total params: 348,219  
+Trainable params: 348,219  
+
+
 
 #### 3. Creation of the Training Set & Training Process
 
@@ -127,62 +155,8 @@ I used this training data for training the model. The validation set helped dete
 
 
 
-24696/24696 [==============================] - 28s - loss: 0.0386 - val_loss: 0.0525
-Epoch 2/5
-24696/24696 [==============================] - 27s - loss: 0.0316 - val_loss: 0.0485
-Epoch 3/5
-24696/24696 [==============================] - 27s - loss: 0.0266 - val_loss: 0.0519
-Epoch 4/5
-24696/24696 [==============================] - 27s - loss: 0.0230 - val_loss: 0.0565
-Epoch 5/5
-24696/24696 [==============================] - 27s - loss: 0.0198 - val_loss: 0.0646
 
 
 
-24696/24696 [==============================] - 30s - loss: 0.0411 - val_loss: 0.0517
-Epoch 2/5
-24696/24696 [==============================] - 28s - loss: 0.0348 - val_loss: 0.0504
-Epoch 3/5
-24696/24696 [==============================] - 28s - loss: 0.0311 - val_loss: 0.0521
-Epoch 4/5
-24696/24696 [==============================] - 28s - loss: 0.0286 - val_loss: 0.0517
-Epoch 5/5
-24696/24696 [==============================] - 28s - loss: 0.0265 - val_loss: 0.0516
 
 
-Layer (type)                 Output Shape              Param #   
-=================================================================
-lambda_1 (Lambda)            (None, 160, 320, 3)       0         
-_________________________________________________________________
-cropping2d_1 (Cropping2D)    (None, 65, 320, 3)        0         
-_________________________________________________________________
-conv2d_1 (Conv2D)            (None, 31, 158, 24)       1824      
-_________________________________________________________________
-conv2d_2 (Conv2D)            (None, 14, 77, 36)        21636     
-_________________________________________________________________
-conv2d_3 (Conv2D)            (None, 5, 37, 48)         43248     
-_________________________________________________________________
-conv2d_4 (Conv2D)            (None, 3, 35, 64)         27712     
-_________________________________________________________________
-dropout_1 (Dropout)          (None, 3, 35, 64)         0         
-_________________________________________________________________
-conv2d_5 (Conv2D)            (None, 1, 33, 64)         36928     
-_________________________________________________________________
-dropout_2 (Dropout)          (None, 1, 33, 64)         0         
-_________________________________________________________________
-flatten_1 (Flatten)          (None, 2112)              0         
-_________________________________________________________________
-dense_1 (Dense)              (None, 100)               211300    
-_________________________________________________________________
-dropout_3 (Dropout)          (None, 100)               0         
-_________________________________________________________________
-dense_2 (Dense)              (None, 50)                5050      
-_________________________________________________________________
-dense_3 (Dense)              (None, 10)                510       
-_________________________________________________________________
-dense_4 (Dense)              (None, 1)                 11        
-=================================================================
-Total params: 348,219
-Trainable params: 348,219
-Non-trainable params: 0
-_________________________________________________________________
