@@ -1,9 +1,5 @@
-# **Behavioral Cloning** 
-f you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+# **Behavioral Cloning Project** 
 
----
-
-**Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
@@ -15,8 +11,9 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image1]: ./examples/driving.png "Driving Image"
+[image2]: ./examples/center.jpg "Normal Image"
+[image3]: ./examples/center_flipped.jpg "Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -124,12 +121,12 @@ Trainable params: 348,219
 
 To capture good driving behavior, I recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
-![alt text][image2]
+![alt text][image1]
 
 To augment the data sat, I also flipped images since the most of the corners are left-turn and the model will tend to turn left. For example, here is an image that has then been flipped:
 
-![alt text][image6]
-![alt text][image7]
+![alt text][image2]
+![alt text][image3]
 
 I also used images from left and right camera. This will help the model to learn more different data. I shifted the value of the steering angle for each images 0.2 deg.
 
