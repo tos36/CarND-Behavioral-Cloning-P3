@@ -13,7 +13,7 @@ The goals / steps of this project are the following:
 
 [image1]: ./examples/driving.png "Driving Image"
 [image2]: ./examples/center.jpg "Normal Image"
-[image3]: ./examples/center_flipped.jpg "Flipped Image"
+[image3]: ./examples/center_flipped1.jpg "Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
